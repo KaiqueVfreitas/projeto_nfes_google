@@ -98,6 +98,11 @@ O envio será feito por meio do servidor FTP da empresa, usando o certificado di
 ## Estrutura de Pastas
 
 <!-- Sendo desenvolvido -->
+manual_exemplo_sistema_prefeitura/  # Manual fornecido pela prefeitura
+        NFSE-NACIONAL_ManualDeIntegracao_Curitiba-v1.pdf # Descrição de cada detalhe
 
+## Pastas que não estão no código por questão de segurança
+acesso_servidor_ftp/ # Informações da empresa
+seguranca_privacidade/ # Conta usada para manusear o google sheets
 ## Tecnologias usadas
 Python
