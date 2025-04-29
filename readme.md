@@ -1,86 +1,103 @@
-# Integração RPS/NFS-e Curitiba - Google Sheets para FTP
+# Projeto Integração RPS/NFS-e - Google Sheets para FTP
+
+---
+
+## Escopo
+
+O objetivo do projeto é automatizar a emissão de notas fiscais de serviço eletrônicas (NFS-e) a partir de dados armazenados em uma planilha do Google Sheets.  
+O sistema irá ler as informações da planilha, criar os documentos de RPS (Recibo Provisório de Serviço), enviar para a Prefeitura de Curitiba para formalizar a NFS-e, e acompanhar o status do processo.  
+O envio será feito por meio do servidor FTP da empresa, usando o certificado digital existente, e em alguns casos será possível gerar um arquivo PDF para facilitar a visualização.
+
+---
 
 ## Pontos Técnicos Importantes
-- Toda troca de informações será feita em *XML, seguindo o padrão **NFS-e Nacional*.
-- Comunicação baseada no *WS-I Basic Profile, modelo **Document/Literal Wrapped*.
-- Utilização obrigatória de *certificado digital ICP-Brasil (A1 ou A3)* para assinatura dos XMLs.
-- Conexão segura via *SSL/TLS*.
-- O envio dos arquivos será realizado via *FTP* para o servidor disponibilizado.
-- O XML deve ser *validado pelo XSD* fornecido pela prefeitura antes do envio.
-- Em casos específicos, poderá ser gerado *PDF* a partir das NFS-e para o cliente.
-- Implementação de rotina de *consulta de status* de processamento do RPS/NFS-e.
-- *Padrão de nomeação*: 
-  - Seguir sempre as recomendações da linguagem (ex: snake_case no Python, camelCase no JavaScript).
-  - Usar *nomes em português, **intuitivos e autoexplicativos* (ex.: gerar_xml_rps, enviar_para_ftp).
+
+- **Formato de Comunicação:**  
+  Todas as trocas de dados seguem o padrão **XML** e utilizam o modelo **WS-I Basic Profile -- NFS-e Nacionais**, com o tipo de comunicação **Document/Literal Wrapped**.
+
+- **Assinatura Digital:**  
+  Os arquivos XML devem ser **assinados digitalmente** com certificado ICP-Brasil tipo A1 ou A3, respeitando o padrão de assinatura XML (XMLDSig).  
+  A assinatura precisa ser feita nos elementos corretos (`InfRps` e `InfLoteRps`) antes do envio.
+
+- **Certificado Digital:**  
+  Deve ser utilizado certificado digital válido, emitido por Autoridade Certificadora reconhecida pela ICP-Brasil.  
+  O certificado também é exigido para autenticação na comunicação SSL.
+
+- **Envio dos Arquivos:**  
+  O envio dos arquivos XML será feito via **FTP** seguro para o servidor da empresa.  
+  O projeto não fará envio direto para o sistema da Prefeitura.
+
+- **Validação dos XMLs:**  
+  Todos os XMLs gerados devem ser validados com seus respectivos **arquivos XSD** fornecidos pela Prefeitura antes do envio.
+
+- **Consulta de Retornos:**  
+  O sistema deverá ter um processo de consulta para verificar se as RPS enviadas foram aceitas, rejeitadas ou convertidas em NFS-e.
+
+- **Geração de PDF (opcional):**  
+  Quando aplicável, o XML da NFS-e poderá ser convertido em arquivo PDF para facilitar o acesso ou impressão do documento.
+
+- **Padrão de Nomeação:**  
+  Todos os arquivos, variáveis, funções e métodos devem seguir o padrão da linguagem (snake_case para Python), usando **nomes em português**, intuitivos e autoexplicativos.
 
 ---
 
 ## Lista de Tarefas
 
-### 1. Conexão e extração de dados
+### 1. Conexão e Extração de Dados
 
-- [ ] Configurar acesso ao Google Sheets via gspread e google-auth.
+- [ ] Configurar acesso autorizado ao Google Sheets.
 - [ ] Ler e mapear os dados necessários da planilha.
 
-### 2. Processamento de dados
+### 2. Processamento e Validação de Dados
 
-- [ ] Validar os campos obrigatórios conforme o layout exigido pela prefeitura.
-- [ ] Tratar dados para formatação correta (datas, números, CPF/CNPJ).
+- [ ] Verificar obrigatoriedade dos campos exigidos pela Prefeitura.
+- [ ] Tratar formatação dos dados (datas, valores numéricos, CPF/CNPJ).
+- [ ] Validar se o número de RPS está conforme sequencial.
 
 ### 3. Geração de XML
 
-- [ ] Criar XMLs conforme estrutura exigida (EnviarLoteRpsEnvio -> LoteRps -> ListaRps -> Rps).
-- [ ] Validar os XMLs gerados contra os arquivos XSD.
+- [ ] Gerar o XML do Lote de RPS conforme padrão ABRASF/NFS-e (EnviarLoteRpsEnvio -> LoteRps -> ListaRps -> Rps).
+- [ ] Gerar cada RPS com os dados obrigatórios.
+- [ ] Respeitar todos os esquemas XSD disponibilizados pela Prefeitura.
 
-### 4. Assinatura de XML
+### 4. Assinatura Digital de XML
 
-- [ ] Assinar digitalmente os XMLs usando o certificado ICP-Brasil.
-- [ ] Assinar corretamente os elementos exigidos (InfRps e InfLoteRps).
+- [ ] Assinar digitalmente os elementos `InfRps` e `InfLoteRps`.
+- [ ] Garantir que o XML assinado esteja válido sem informações redundantes (sem KeyValue, Modulus, etc.).
 
-### 5. Envio dos arquivos
+### 5. Envio dos Arquivos
 
-- [ ] Conectar ao servidor FTP (ftp.gb.stackcp.com) usando ftplib ou ftplib.FTP_TLS.
-- [ ] Fazer upload dos arquivos XML assinados para a pasta correta.
+- [ ] Conectar ao servidor FTP usando as credenciais fornecidas.
+- [ ] Enviar os arquivos XML assinados para a pasta correta.
+- [ ] Confirmar o envio e registrar logs dos envios.
 
-### 6. Consulta de status
+### 6. Consulta de Status
 
-- [ ] Implementar rotina de consulta de retorno no FTP (aguardar/baixar arquivos de resposta).
-- [ ] Interpretar o status do lote (processado com sucesso, erro, etc).
+- [ ] Criar processo para verificar se há resposta da Prefeitura no FTP.
+- [ ] Baixar arquivos de resposta XML.
+- [ ] Interpretar o status dos envios (processado, erro, rejeitado).
 
-### 7. Geração de PDF (Opcional)
+### 7. Geração de PDF
 
-- [ ] Criar PDFs das NFS-e a partir dos dados recebidos (usando WeasyPrint, reportlab, ou equivalente).
+- [ ] Implementar geração de PDF a partir dos XMLs de RPS e NFS-e.
 
-### 8. Controle de logs
+### 8. Controle de Logs
 
-- [ ] Registrar eventos importantes como envios, respostas e erros em arquivos de log ou banco de dados.
+#### - [ ] Implementar registro de logs para:
+  - [ ] Envio de arquivos
+  - [ ] Respostas recebidas
+  - [ ] Falhas e erros no processo
 
 ### 9. Documentação
 
-- [ ] Criar um manual resumido de operação e manutenção do sistema.
-- [ ] Gerar um guia de instalação e configuração dos componentes do projeto.
+- [ ] Elaborar manual de uso do sistema.
+- [ ] Criar documentação técnica básica para instalação, configuração e manutenção.
 
 ---
 
-## Estrutura sugerida de pastas
+## Estrutura de Pastas
 
-```plaintext
-/src
-  /google_sheets/
-    leitor_planilha.py
-  /xml/
-    gerador_xml.py
-    assinador_xml.py
-  /ftp/
-    envio_ftp.py
-    recebimento_ftp.py
-  /nfs_e/
-    gerador_pdf.py
-  main.py
-/logs/
-/data/
-  /xmls_enviados/
-  /xmls_retorno/
-requirements.txt
-README.md 
+<!-- Sendo desenvolvido -->
 
+## Tecnologias usadas
+Python
