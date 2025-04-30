@@ -1,0 +1,171 @@
+﻿<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:e="http://www.e-governeapps2.com.br/" xmlns:xd="http://www.w3.org/2000/09/xmldsig#">
+   <soap:Header/>
+   <soap:Body>
+      <e:CancelarNfse>
+         
+         <e:CancelarNfseEnvio>
+            
+            <e:Pedido>
+               
+               <e:InfPedidoCancelamento>
+                  
+                  <e:IdentificacaoNfse>
+                     <e:Numero>2</e:Numero>
+                     
+                     <e:Cnpj>12345678000100</e:Cnpj>
+                     
+                     <e:InscricaoMunicipal>1234567</e:InscricaoMunicipal>
+                     <e:CodigoMunicipio>4106902</e:CodigoMunicipio>
+                  </e:IdentificacaoNfse>
+                  
+                  <e:CodigoCancelamento>?</e:CodigoCancelamento>
+               </e:InfPedidoCancelamento>
+               
+               <e:Signature Id="?">
+                  
+                  <xd:SignedInfo Id="?">
+                     
+                     <xd:CanonicalizationMethod Algorithm="?">
+                        e
+                        
+                        gero
+                     </xd:CanonicalizationMethod>
+                     
+                     <xd:SignatureMethod Algorithm="?">
+                        cum
+                        
+                        <xd:HMACOutputLength>?</xd:HMACOutputLength>
+                        sonoras
+                        
+                        aeoliam
+                     </xd:SignatureMethod>
+                     
+                     <xd:Reference Id="?" URI="?" Type="?">
+                        
+                        <xd:Transforms>
+                           
+                           <xd:Transform Algorithm="?">
+                              quae
+                              
+                              
+                              <xd:XPath>?</xd:XPath>
+                              
+                              ventos
+                           </xd:Transform>
+                        </xd:Transforms>
+                        
+                        <xd:DigestMethod Algorithm="?">
+                           verrantque
+                           
+                           temperat
+                        </xd:DigestMethod>
+                        
+                        <xd:DigestValue>cid:1540942552335</xd:DigestValue>
+                     </xd:Reference>
+                  </xd:SignedInfo>
+                  
+                  <xd:SignatureValue Id="?">cid:688542467993</xd:SignatureValue>
+                  
+                  <xd:KeyInfo Id="?">
+                     per
+                     
+                     
+                     <xd:X509Data>
+                        
+                        
+                        <xd:X509IssuerSerial>
+                           
+                           <xd:X509IssuerName>?</xd:X509IssuerName>
+                           
+                           <xd:X509SerialNumber>?</xd:X509SerialNumber>
+                        </xd:X509IssuerSerial>
+                        
+                        <xd:X509SubjectName>?</xd:X509SubjectName>
+                        
+                        <xd:X509CRL>cid:269305062261</xd:X509CRL>
+                        
+                        <xd:X509Certificate>cid:562874884958</xd:X509Certificate>
+                        
+                        <xd:X509SKI>cid:1067375718317</xd:X509SKI>
+                        
+                     </xd:X509Data>
+                     
+                     <xd:SPKIData>
+                        
+                        <xd:SPKISexp>cid:567092530495</xd:SPKISexp>
+                        
+                     </xd:SPKIData>
+                     
+                     <xd:RetrievalMethod URI="?" Type="?">
+                        
+                        <xd:Transforms>
+                           
+                           <xd:Transform Algorithm="?">
+                              turbine
+                              
+                              
+                              <xd:XPath>?</xd:XPath>
+                              
+                              circum
+                           </xd:Transform>
+                        </xd:Transforms>
+                     </xd:RetrievalMethod>
+                     
+                     <xd:KeyName>?</xd:KeyName>
+                     
+                     <xd:KeyValue>
+                        regemque
+                        
+                        
+                        <xd:RSAKeyValue>
+                           
+                           <xd:Modulus>cid:834762247354</xd:Modulus>
+                           
+                           <xd:Exponent>cid:1105178970750</xd:Exponent>
+                        </xd:RSAKeyValue>
+                        
+                        <xd:DSAKeyValue>
+                           
+                           <xd:P>cid:661921433549</xd:P>
+                           
+                           <xd:Q>cid:845129276018</xd:Q>
+                           
+                           <xd:G>cid:1199563775250</xd:G>
+                           
+                           <xd:Y>cid:46921019281</xd:Y>
+                           
+                           <xd:J>cid:126542742641</xd:J>
+                           
+                           <xd:Seed>cid:63418594520</xd:Seed>
+                           
+                           <xd:PgenCounter>cid:769939019836</xd:PgenCounter>
+                        </xd:DSAKeyValue>
+                        
+                        nimborum
+                     </xd:KeyValue>
+                     
+                     <xd:MgmtData>?</xd:MgmtData>
+                     
+                     <xd:PGPData>
+                        
+                        
+                        <xd:PGPKeyID>cid:621704882324</xd:PGPKeyID>
+                        
+                        <xd:PGPKeyPacket>cid:1281540742473</xd:PGPKeyPacket>
+                        
+                     </xd:PGPData>
+                     
+                     fremunt
+                  </xd:KeyInfo>
+                  
+                  <xd:Object Id="?" MimeType="?" Encoding="?">
+                     foedere
+                     
+                     ferant
+                  </xd:Object>
+               </e:Signature>
+            </e:Pedido>
+         </e:CancelarNfseEnvio>
+      </e:CancelarNfse>
+   </soap:Body>
+</soap:Envelope>

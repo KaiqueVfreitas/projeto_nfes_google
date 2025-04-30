@@ -4,7 +4,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-
+import re
+import json
 
 # Conforme o escopo, o acesso que o sistema terá será apenas de leitura
 ESCOPO_AUTORIZACAO = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
@@ -84,6 +85,6 @@ def acessar_planilha_google_sheets():
         print(f"Ocorreu um erro ao acessar a API do Google Sheets: {erro}")
         return []
 
-
 if __name__ == "__main__":
-   acessar_planilha_google_sheets()
+    acessar_planilha_google_sheets()
+   
