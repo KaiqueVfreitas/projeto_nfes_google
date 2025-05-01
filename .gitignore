@@ -1,6 +1,7 @@
 seguranca_privacidade/
 acesso_servidor_ftp/
 modelo_documentos/
+pdf_xml_gerados_rps/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
