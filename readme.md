@@ -50,7 +50,7 @@ O envio será feito por meio do servidor FTP da empresa, usando o certificado di
 
 ### 2. Processamento e Validação de Dados
 
-- [ ] Verificar obrigatoriedade dos campos exigidos pela Prefeitura.
+- [X] Verificar obrigatoriedade dos campos exigidos pela Prefeitura.
 - [ ] Tratar formatação dos dados (datas, valores numéricos, CPF/CNPJ).
 - [ ] Validar se o número de RPS está conforme sequencial.
 

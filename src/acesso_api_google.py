@@ -12,7 +12,7 @@ ESCOPO_AUTORIZACAO = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 ROTA_ARQUIVO_ID_PLANILHA = "acesso_servidor_ftp/id_planilha.txt"
 ROTA_ARQUIVO_CREDENCIAIS = "acesso_servidor_ftp/client_google_api.json"
 ROTA_TOKEN = "acesso_servidor_ftp/token.json"
-DADOS_PLANILHA_SELECIONADOS = "emitirNFSe!A1:AP10"
+DADOS_PLANILHA_SELECIONADOS = "emitirNFSe!A1:AP20000"
 CAMINHO_JSON_FINAL = "acesso_servidor_ftp/dados_gerar_rps.json"
 
 
@@ -94,6 +94,40 @@ def acessar_planilha_google_sheets():
         return []
 
 
+def verificacao_existencia_registro(lista_dados_planilha):
+    """
+    Verifica a existência dos dados antes da geração do JSON.
+    Retorna apenas as linhas consideradas válidas.
+    """
+    cabecalhos = lista_dados_planilha[0]
+    linhas_validas = []
+
+    for indice_linha, linha in enumerate(lista_dados_planilha[1:]):
+        if alerta_dados_incompletos_planilha(linha, indice_linha, cabecalhos):
+            continue
+        nao_adiciona_json_dados_vazios(linha, indice_linha, cabecalhos)
+        linhas_validas.append(linha)
+
+    return [cabecalhos] + linhas_validas 
+
+def alerta_dados_incompletos_planilha(linha, indice_linha, cabecalhos):
+    campos_vazios = sum(1 for campo in linha if padrao_vazio(campo) == "")
+    if campos_vazios > 5:
+        print(f"[IGNORADO] Linha {indice_linha + 2} ignorada (mais de 5 campos vazios).")
+        return True
+    return False
+
+
+
+
+def nao_adiciona_json_dados_vazios(linha, indice_linha, cabecalhos):
+    campos_vazios = [
+        cabecalhos[i] for i, campo in enumerate(linha) if padrao_vazio(campo) == ""
+    ]
+    if campos_vazios:
+        print(f"[ATENÇÃO] Linha {indice_linha + 2} contém campos vazios: {', '.join(campos_vazios)}")
+
+
 def atributo_identificador_unico(numero_lote, cnpj_prestador, inscricao_municipal_prestador):
     texto_concatenado = f"{numero_lote}-{cnpj_prestador}-{inscricao_municipal_prestador}".lower()
     texto_limpo = re.sub(r'[^a-zA-Z0-9]', '', texto_concatenado)
@@ -116,7 +150,7 @@ def passagem_lista_json(lista_dados_planilha):
     json_formatado = []
     identificadores_gerados = set()
 
-    # Captura o cabeçalho da planilha (títulos das colunas)
+   
     cabecalhos = lista_dados_planilha[0]
 
     for linha in lista_dados_planilha[1:]:
@@ -155,13 +189,13 @@ def passagem_lista_json(lista_dados_planilha):
             "iss_retido": padrao_vazio(dados_linha.get("ISS Retido")),
             "valor_iss": padrao_vazio(dados_linha.get("Valor ISS")),
             "valor_iss_retido": padrao_vazio(dados_linha.get("Valor ISS Retido")),
-            "outras_retencoes": padrao_vazio(dados_linha.get("Outras Retencoes")),
+            "outras_retencoes": padrao_vazio(dados_linha.get("Outras Retenções")),
             "base_calculo": padrao_vazio(dados_linha.get("Base de Cálculo")),
-            "aliquota": padrao_vazio(dados_linha.get("Aliquota")),
-            "valor_liquido_nfse": padrao_vazio(dados_linha.get("Valor Liquido da NFSe")),
+            "aliquota": padrao_vazio(dados_linha.get("Alíquota")),
+            "valor_liquido_nfse": padrao_vazio(dados_linha.get("Valor Líquido da NFS-e")),
             "desconto_incondicionado": padrao_vazio(dados_linha.get("Desconto Incondicionado")),
             "desconto_condicionado": padrao_vazio(dados_linha.get("Desconto Condicionado")),
-            "item_lista_servicos": padrao_vazio(dados_linha.get("Item da Lista de Servicos")),
+            "item_lista_servicos": padrao_vazio(dados_linha.get("Item Lista de Serviço")),
             "discriminacao": padrao_vazio(dados_linha.get("Discriminação")),
             "cod_municipio_servico": padrao_vazio(dados_linha.get("Código do Município do Serviço")),
             "cnpj_tomador": padrao_vazio(dados_linha.get("CNPJ do Tomador")),
@@ -173,7 +207,7 @@ def passagem_lista_json(lista_dados_planilha):
             "cod_municipio_tomador": padrao_vazio(dados_linha.get("Código do Município do Tomador")),
             "uf": padrao_vazio(dados_linha.get("UF")),
             "cep": padrao_vazio(dados_linha.get("CEP")),
-            "email_tomador": padrao_vazio(dados_linha.get("E-mail do Tomador"))
+            "email_tomador": padrao_vazio(dados_linha.get("Email do Tomador"))
         }
 
         json_formatado.append(estrutura_json)
@@ -192,5 +226,10 @@ def passagem_lista_json(lista_dados_planilha):
 if __name__ == "__main__":
     dados_planilha = acessar_planilha_google_sheets()
     if dados_planilha:
-        passagem_lista_json(dados_planilha)
+        dados_filtrados = verificacao_existencia_registro(dados_planilha)
+        if len(dados_filtrados) > 1:
+            passagem_lista_json(dados_filtrados)
+        else:
+            print("Nenhuma linha válida encontrada para gerar o JSON.")
+
 
