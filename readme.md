@@ -46,7 +46,7 @@ O envio será feito por meio do servidor FTP da empresa, usando o certificado di
 ### 1. Conexão e Extração de Dados
 
 - [X] Configurar acesso autorizado ao Google Sheets.
-- [ ] Ler e mapear os dados necessários da planilha.
+- [X] Ler e mapear os dados necessários da planilha.
 
 ### 2. Processamento e Validação de Dados
 
