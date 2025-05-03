@@ -1,6 +1,14 @@
+certificados_schemas/
 seguranca_privacidade/
+pdf_xml_assinados/
+xml_rps_invalidos/
+xml_rps_validados_prefeitura/
+certificados/
+xml_com_erros/
+xml_rps_validos/
 acesso_servidor_ftp/
 modelo_documentos/
+xml_prefeitura_aprovados/
 pdf_xml_gerados_rps/
 # Byte-compiled / optimized / DLL files
 __pycache__/
